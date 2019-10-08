@@ -1,0 +1,40 @@
+/****************************************************************
+* NI Deployed Panel Styles
+* National Instruments Copyright 2019
+*
+* This file should only contain CSS related to the panel / WebVI
+* itself (and panel layout modes) that we only want in deployed pages.
+*****************************************************************/
+
+ni-front-panel[layout="flexible"] {
+    align-items: initial;
+    width: 100%;
+}
+
+/* On screens that are 480px or less, get rid of the front panel padding */
+@media screen and (max-width: 480px) {
+    ni-front-panel[layout="flexible"] {
+        --ni-padding: 0px 0px 0px 0px;
+    }
+}
+
+/*
+ * Override grid content cell size (1fr in niPanelStyles.css) for resizable controls (control-resize-mode != "fixed").
+ * minmax(minWidthOrHeight, 1fr) lets controls with inner divs with
+ * explicit sizes still resize correctly. Not needed when in-IDE since
+ * the panel isn't resizable then (and we don't emit min size CSS at
+ * edit-time).
+*/
+ni-flexible-layout-component[control-resize-mode="both-directions"],
+ni-flexible-layout-component[control-resize-mode="resize-horizontally"],
+ni-flexible-layout-component[control-resize-mode="maintain-aspect-ratio"] {
+    grid-template-columns: auto minmax(var(--ni-min-width), 1fr) auto;
+    grid-template-rows: auto minmax(var(--ni-min-height), 1fr) auto;
+}
+
+ni-flexible-layout-component[layout-pattern="graph"][control-resize-mode="both-directions"],
+ni-flexible-layout-component[layout-pattern="graph"][control-resize-mode="resize-horizontally"],
+ni-flexible-layout-component[layout-pattern="graph"][control-resize-mode="maintain-aspect-ratio"] {
+    grid-template-columns: auto minmax(var(--ni-min-width), 1fr) auto auto;
+    grid-template-rows: auto auto minmax(var(--ni-min-height), 1fr) auto auto auto auto auto;
+}
